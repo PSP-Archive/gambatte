@@ -39,7 +39,7 @@
 #include <utility>
 #include <vector>
 
-#include <pspdebug.h>
+
 #include <pspkernel.h>
 namespace {
 
