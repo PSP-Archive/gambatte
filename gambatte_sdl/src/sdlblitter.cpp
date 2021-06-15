@@ -18,7 +18,7 @@
 
 #include "sdlblitter.h"
 #include "scalebuffer.h"
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 struct SdlBlitter::SurfaceDeleter {
 	static void del(SDL_Surface *s) { SDL_FreeSurface(s); }

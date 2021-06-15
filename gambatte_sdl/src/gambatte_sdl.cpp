@@ -27,7 +27,7 @@
 #include "videolink/vfilterinfo.h"
 #include <gambatte.h>
 #include <pakinfo.h>
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
@@ -39,8 +39,10 @@
 #include <utility>
 #include <vector>
 
-
+#ifdef PSP
 #include <pspkernel.h>
+PSP_MODULE_INFO("Gambatte", 0, 1, 1);
+#endif
 namespace {
 
 using namespace gambatte;
@@ -844,12 +846,8 @@ int GambatteSdl::run(long const sampleRate, int const latency, int const periods
 } // anon namespace
 
 
-PSP_MODULE_INFO("Gambatte", 0, 1, 1);
-
 int main(int argc, char **argv) {
 
-PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER);
-PSP_HEAP_SIZE_KB(-256);
 
 	GambatteSdl gambatteSdl;
 	return gambatteSdl.exec(argc, argv);
