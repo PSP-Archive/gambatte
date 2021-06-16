@@ -16,9 +16,9 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "cpu.h"
-#include "memory.h"
-#include "savestate.h"
+#include <gambatte/cpu.h>
+#include <gambatte/memory.h>
+#include <gambatte/savestate.h>
 
 namespace gambatte {
 

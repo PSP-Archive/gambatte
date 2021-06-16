@@ -16,8 +16,8 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "ly_counter.h"
-#include "../savestate.h"
+#include <gambatte/video/ly_counter.h>
+#include <gambatte/savestate.h>
 
 namespace gambatte {
 

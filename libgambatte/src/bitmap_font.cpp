@@ -67,7 +67,7 @@
   gnome dot org.
 */
 
-#include "bitmap_font.h"
+#include <gambatte/bitmap_font.h>
 #include <algorithm>
 
 static unsigned char const n0_bits[] = { 0x68,

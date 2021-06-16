@@ -16,8 +16,8 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "interrupter.h"
-#include "memory.h"
+#include <gambatte/interrupter.h>
+#include <gambatte/memory.h>
 
 namespace gambatte {
 

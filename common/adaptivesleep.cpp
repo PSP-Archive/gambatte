@@ -16,7 +16,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.             *
  ***************************************************************************/
-#include "adaptivesleep.h"
+#include <common/adaptivesleep.h>
 
 static usec_t absdiff(usec_t a, usec_t b) { return a < b ? b - a : a - b; }
 

@@ -16,9 +16,9 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "length_counter.h"
-#include "master_disabler.h"
-#include "psgdef.h"
+#include <gambatte/sound/length_counter.h>
+#include <gambatte/sound/master_disabler.h>
+#include <gambatte/sound/psgdef.h>
 
 #include <algorithm>
 

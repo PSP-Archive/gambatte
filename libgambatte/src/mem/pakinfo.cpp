@@ -1,4 +1,4 @@
-#include "pakinfo_internal.h"
+#include <gambatte/mem/pakinfo_internal.h>
 
 #include <cstring>
 

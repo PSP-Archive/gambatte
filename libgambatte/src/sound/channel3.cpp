@@ -16,9 +16,9 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "channel3.h"
-#include "psgdef.h"
-#include "../savestate.h"
+#include <gambatte/sound/channel3.h>
+#include <gambatte/sound/psgdef.h>
+#include <gambatte/savestate.h>
 
 #include <algorithm>
 #include <cstring>

@@ -16,7 +16,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.             *
  ***************************************************************************/
-#include "rateest.h"
+#include <common/rateest.h>
 #include <cstdlib>
 
 void RateEst::SumQueue::push(std::ptrdiff_t const samples, usec_t const usecs) {

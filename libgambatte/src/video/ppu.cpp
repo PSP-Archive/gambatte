@@ -16,8 +16,8 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "ppu.h"
-#include "savestate.h"
+#include <gambatte/video/ppu.h>
+#include <gambatte/savestate.h>
 
 #include <algorithm>
 #include <cstddef>

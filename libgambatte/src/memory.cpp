@@ -16,11 +16,11 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "memory.h"
-#include "inputgetter.h"
-#include "savestate.h"
-#include "sound.h"
-#include "video.h"
+#include <gambatte/memory.h>
+#include <gambatte/inputgetter.h>
+#include <gambatte/savestate.h>
+#include <gambatte/sound.h>
+#include <gambatte/video.h>
 
 #include <algorithm>
 

@@ -16,9 +16,9 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "statesaver.h"
-#include "savestate.h"
-#include "array.h"
+#include <gambatte/statesaver.h>
+#include <gambatte/savestate.h>
+#include <common/array.h>
 
 #include <algorithm>
 #include <fstream>

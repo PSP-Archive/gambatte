@@ -3,6 +3,6 @@ set (VIDEOLINK_FILES videolink/rgb32conv.cpp videolink/vfilterinfo.cpp)
 set (VFILTER_FILES videolink/vfilters/catrom2x.cpp videolink/vfilters/catrom3x.cpp videolink/vfilters/kreed2xsai.cpp videolink/vfilters/maxsthq2x.cpp videolink/vfilters/maxsthq3x.cpp)
 
 set( COMMON_FILES adaptivesleep.cpp rateest.cpp skipsched.cpp ${RESAMPLE_FILES} ${VIDEOLINK_FILES} ${VFILTER_FILES})
-include_directories(. ${PROJECT_SOURCE_DIR}/libgambatte/include)
+
 add_library (common ${COMMON_FILES})
  

@@ -1,4 +1,4 @@
-#include "loadres.h"
+#include <gambatte/loadres.h>
 
 namespace gambatte {
 

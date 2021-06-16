@@ -19,12 +19,13 @@ version 2 along with this program; if not, write to the
 Free Software Foundation, Inc.,
 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 ***************************************************************************/
-#include "stdfile.h"
+#include <gambatte/file/stdfile.h>
+
 #include <cctype>
 #include <cstring>
 
 namespace zlib {
-#include "unzip/unzip.h"
+#include <gambatte/file/unzip/unzip.h>
 }
 
 namespace {

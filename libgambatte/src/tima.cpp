@@ -16,8 +16,8 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "tima.h"
-#include "savestate.h"
+#include <gambatte/tima.h>
+#include <gambatte/savestate.h>
 
 using namespace gambatte;
 

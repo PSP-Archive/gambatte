@@ -14,12 +14,11 @@
 //   version 2 along with this program; if not, write to the
 //   Free Software Foundation, Inc.,
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
-//
 
-#include "cartridge.h"
-#include "file/file.h"
-#include "../savestate.h"
-#include "pakinfo_internal.h"
+#include <gambatte/mem/cartridge.h>
+#include <gambatte/file/file.h>
+#include <gambatte/savestate.h>
+#include <gambatte/mem/pakinfo_internal.h>
 
 #include <cstring>
 #include <fstream>

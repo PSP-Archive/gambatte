@@ -16,10 +16,10 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "state_osd_elements.h"
-#include "array.h"
-#include "bitmap_font.h"
-#include "statesaver.h"
+#include <gambatte/state_osd_elements.h>
+#include <common/array.h>
+#include <gambatte/bitmap_font.h>
+#include <gambatte/statesaver.h>
 
 #include <fstream>
 #include <cstring>

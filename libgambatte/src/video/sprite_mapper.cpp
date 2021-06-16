@@ -16,10 +16,10 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "sprite_mapper.h"
-#include "counterdef.h"
-#include "next_m0_time.h"
-#include "../insertion_sort.h"
+#include <gambatte/video/sprite_mapper.h>
+#include <gambatte/counterdef.h>
+#include <gambatte/video/next_m0_time.h>
+#include <gambatte/insertion_sort.h>
 
 #include <algorithm>
 

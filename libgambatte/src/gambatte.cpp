@@ -16,12 +16,12 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "gambatte.h"
-#include "cpu.h"
-#include "initstate.h"
-#include "savestate.h"
-#include "state_osd_elements.h"
-#include "statesaver.h"
+#include <gambatte/gambatte.h>
+#include <gambatte/cpu.h>
+#include <gambatte/initstate.h>
+#include <gambatte/savestate.h>
+#include <gambatte/state_osd_elements.h>
+#include <gambatte/statesaver.h>
 
 #include <cstring>
 #include <sstream>

@@ -16,11 +16,11 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "lyc_irq.h"
-#include "counterdef.h"
-#include "lcddef.h"
-#include "ly_counter.h"
-#include "savestate.h"
+#include <gambatte/video/lyc_irq.h>
+#include <gambatte/counterdef.h>
+#include <gambatte/video/lcddef.h>
+#include <gambatte/video/ly_counter.h>
+#include <gambatte/savestate.h>
 
 #include <algorithm>
 

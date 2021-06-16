@@ -16,10 +16,10 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "initstate.h"
-#include "counterdef.h"
-#include "savestate.h"
-#include "sound/sound_unit.h"
+#include <gambatte/initstate.h>
+#include <gambatte/counterdef.h>
+#include <gambatte/savestate.h>
+#include <gambatte/sound/sound_unit.h>
 
 #include <algorithm>
 #include <cstring>

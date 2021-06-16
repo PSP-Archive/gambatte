@@ -16,8 +16,8 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "duty_unit.h"
-#include "psgdef.h"
+#include <gambatte/sound/duty_unit.h>
+#include <gambatte/sound/psgdef.h>
 
 #include <algorithm>
 
