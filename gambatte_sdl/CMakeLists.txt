@@ -1,19 +1,28 @@
-set(CMAKE_CXX_STANDARD 11)
+#include_directories(${SDL_INCLUDE_DIR})
 
-add_library(gambatte_sdllib audiosink.cpp blitterwrapper.cpp parser.cpp sdlblitter.cpp str_to_sdlkey.cpp usec.cpp)
+add_executable(gambatte_sdl gambatte_sdl.cpp
+  audiosink.cpp
+  blitterwrapper.cpp
+  parser.cpp
+  sdlblitter.cpp
+  str_to_sdlkey.cpp
+  usec.cpp)
 
-include_directories(${PROJECT_SOURCE_DIR}/libgambatte/include ${PROJECT_SOURCE_DIR}/common ${PROJECT_SOURCE_DIR}/libgambatte/src ${SDL_INCLUDE_DIR})
 
-add_executable(gambatte_sdl gambatte_sdl.cpp)
+target_link_libraries(gambatte_sdl
+  PUBLIC gambatte_sdllib
+  PUBLIC gambatte
+  PUBLIC common
+  PUBLIC SDL
+  PUBLIC z
+  PUBLIC gcc
+  PUBLIC stdc++
+  PUBLIC SDL)
 
-
-
-if(PSP)
-    set(ADDITIONAL_LIBS psppower ${PSP_LIBRARIES})
+if(PSP) 
+  target_link_libraries(gambatte_sdl
+    psppower
+    ${PSP_LIBRARIES})
+  
+  create_pbp_file(TARGET gambatte_sdl TITLE "Gambatte SDL")
 endif(PSP)
-
-target_link_libraries(gambatte_sdl gambatte_sdllib gambatte common SDL z gcc stdc++ SDL ${ADDITIONAL_LIBS})
-
-if(PSP)
-    create_pbp_file(TARGET gambatte_sdl TITLE Gambatte_SDL)
- endif(PSP)
