@@ -4,4 +4,4 @@ project(gambatte)
 
 include_directories(include)
 add_subdirectory(src)
-#add_subdirectory(gambatte_sdl/src)
+add_subdirectory(gambatte_sdl)
