@@ -1,5 +1,3 @@
-#include_directories(${SDL_INCLUDE_DIR})
-
 add_executable(gambatte_sdl gambatte_sdl.cpp
   audiosink.cpp
   blitterwrapper.cpp
@@ -10,7 +8,6 @@ add_executable(gambatte_sdl gambatte_sdl.cpp
 
 
 target_link_libraries(gambatte_sdl
-  PUBLIC gambatte_sdllib
   PUBLIC gambatte
   PUBLIC common
   PUBLIC SDL

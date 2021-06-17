@@ -1,4 +1,5 @@
 add_library(gambatte OBJECT
+  bitmap_font.cpp
   cpu.cpp
   gambatte.cpp
   initstate.cpp
@@ -10,18 +11,31 @@ add_library(gambatte OBJECT
   state_osd_elements.cpp
   statesaver.cpp
   tima.cpp
-  video.cpp)
+  video.cpp
 
-add_subdirectory(file)
-add_subdirectory(mem)
-add_subdirectory(sound)
-add_subdirectory(video)
+  # file/unzip/ioapi.c
+  # file/unzip/unzip.c
+  file/file.cpp
+  # file/file_zip.cpp
 
-target_link_libraries(gambatte
-  PUBLIC gambatte-file
-  PUBLIC gambatte-mem
-  PUBLIC gambatte-sound
-  PUBLIC gambatte-video)
+  mem/cartridge.cpp
+  mem/memptrs.cpp
+  mem/pakinfo.cpp
+  mem/rtc.cpp
+  
+  sound/channel1.cpp
+  sound/channel2.cpp
+  sound/channel3.cpp
+  sound/channel4.cpp
+  sound/duty_unit.cpp
+  sound/envelope_unit.cpp
+  sound/length_counter.cpp
+  
+  video/lyc_irq.cpp
+  video/ly_counter.cpp
+  video/next_m0_time.cpp
+  video/ppu.cpp
+  video/sprite_mapper.cpp)
 
 target_compile_definitions(gambatte
   PUBLIC -DHAVE_STDINT_H)
