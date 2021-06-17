@@ -19,8 +19,8 @@
 #ifndef BLITTERWRAPPER_H
 #define BLITTERWRAPPER_H
 
-#include "gbint.h"
-#include "scoped_ptr.h"
+#include <gambatte/gbint.h>
+#include <common/scoped_ptr.h>
 #include "sdlblitter.h"
 
 class VideoLink;

@@ -16,7 +16,7 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "audiosink.h"
+#include <gambatte_sdl/audiosink.h>
 #include <SDL/SDL_thread.h>
 #include <cstdio>
 

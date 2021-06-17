@@ -16,7 +16,7 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "parser.h"
+#include <gambatte_sdl/parser.h>
 #include <utility>
 
 Parser::Option::Option(char const *s, char c, int nArgs)

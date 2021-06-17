@@ -16,8 +16,8 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "sdlblitter.h"
-#include "scalebuffer.h"
+#include <gambatte_sdl/sdlblitter.h>
+#include <gambatte_sdl/scalebuffer.h>
 #include <SDL/SDL.h>
 
 struct SdlBlitter::SurfaceDeleter {

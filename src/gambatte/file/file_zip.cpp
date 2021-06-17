@@ -30,194 +30,194 @@ namespace zlib {
 
 namespace {
 
-class ZipFile : public gambatte::File {
+  class ZipFile : public gambatte::File {
   private:
-  std::size_t fsize, count;
-  void *zipfile;
-  bool zip_sub_open;
+    std::size_t fsize, count;
+    void *zipfile;
+    bool zip_sub_open;
 
-  void zip(const char *filename);
+    void zip(const char *filename);
 
   public:
-  ZipFile(const char *filename);
-  virtual ~ZipFile();
-  virtual void rewind();
-  bool is_open() const;
-  virtual void close();
-  virtual std::size_t size() const { return fsize; };
-  virtual void read(char *buffer, std::size_t amount);
-  std::size_t gcount() const { return count; }
-  virtual bool fail() const { return !is_open(); }
-};
+    ZipFile(const char *filename);
+    virtual ~ZipFile();
+    virtual void rewind();
+    bool is_open() const;
+    virtual void close();
+    virtual std::size_t size() const { return fsize; };
+    virtual void read(char *buffer, std::size_t amount);
+    std::size_t gcount() const { return count; }
+    virtual bool fail() const { return !is_open(); }
+  };
 
-using namespace std;
-using namespace zlib;
+  using namespace std;
+  using namespace zlib;
 
-static const unsigned int MAX_FILE_NAME = 512;
+  static const unsigned int MAX_FILE_NAME = 512;
 
-ZipFile::ZipFile(const char *filename) : fsize(0), count(0)
-{
-  zip(filename);
-}
-
-void ZipFile::zip(const char *filename)
-{
-  zipfile = unzOpen(filename);
-  if (zipfile)
+  ZipFile::ZipFile(const char *filename) : fsize(0), count(0)
   {
-    zip_sub_open = false;
+    zip(filename);
+  }
 
-    unz_file_info cFileInfo;
-    char ourFile[MAX_FILE_NAME] = { '\n' };
-
-    for (int cFile = unzGoToFirstFile((unzFile)zipfile); cFile == UNZ_OK; cFile = unzGoToNextFile((unzFile)zipfile))
-    {
-      //Temporary char array for file name
-      char cFileName[MAX_FILE_NAME];
-
-      //Gets info on current file, and places it in cFileInfo
-      unzGetCurrentFileInfo((unzFile)zipfile, &cFileInfo, cFileName, MAX_FILE_NAME, 0, 0, 0, 0);
-
-      //Check for largest file which should be the ROM
-      if ((size_t)cFileInfo.uncompressed_size > fsize)
+  void ZipFile::zip(const char *filename)
+  {
+    zipfile = unzOpen(filename);
+    if (zipfile)
       {
-        strcpy(ourFile, cFileName);
-        fsize = (size_t)cFileInfo.uncompressed_size;
+	zip_sub_open = false;
+
+	unz_file_info cFileInfo;
+	char ourFile[MAX_FILE_NAME] = { '\n' };
+
+	for (int cFile = unzGoToFirstFile((unzFile)zipfile); cFile == UNZ_OK; cFile = unzGoToNextFile((unzFile)zipfile))
+	  {
+	    //Temporary char array for file name
+	    char cFileName[MAX_FILE_NAME];
+
+	    //Gets info on current file, and places it in cFileInfo
+	    unzGetCurrentFileInfo((unzFile)zipfile, &cFileInfo, cFileName, MAX_FILE_NAME, 0, 0, 0, 0);
+
+	    //Check for largest file which should be the ROM
+	    if ((size_t)cFileInfo.uncompressed_size > fsize)
+	      {
+		strcpy(ourFile, cFileName);
+		fsize = (size_t)cFileInfo.uncompressed_size;
+	      }
+	  }
+
+	if (ourFile[0] != '\n')
+	  {
+	    //Sets current file to the file we liked before
+	    unzLocateFile((unzFile)zipfile, ourFile, 1);
+
+	    if (unzOpenCurrentFile((unzFile)zipfile) == UNZ_OK)
+	      {
+		zip_sub_open = true;
+	      }
+	  }
+
+	if (!zip_sub_open)
+	  {
+	    unzClose((unzFile)zipfile);
+	    zipfile = 0;
+	  }
       }
-    }
+  }
 
-    if (ourFile[0] != '\n')
-    {
-      //Sets current file to the file we liked before
-      unzLocateFile((unzFile)zipfile, ourFile, 1);
+  ZipFile::~ZipFile()
+  {
+    close();
+  }
 
-      if (unzOpenCurrentFile((unzFile)zipfile) == UNZ_OK)
+  void ZipFile::rewind()
+  {
+    if (is_open())
       {
-        zip_sub_open = true;
+	unzCloseCurrentFile((unzFile)zipfile);
+	unzOpenCurrentFile((unzFile)zipfile);
       }
-    }
+  }
 
-    if (!zip_sub_open)
+  bool ZipFile::is_open() const
+  {
+    return(zipfile && zip_sub_open);
+  }
+
+  void ZipFile::close()
+  {
+    if (is_open())
+      {
+	unzOpenCurrentFile((unzFile)zipfile);
+	unzClose((unzFile)zipfile);
+	zipfile = 0;
+	zip_sub_open = false;
+      }
+  }
+
+  void ZipFile::read(char *buffer, size_t amount)
+  {
+    if (is_open())
+      {
+	count = (size_t)unzReadCurrentFile((unzFile)zipfile, buffer, amount);
+      }
+    else
+      {
+	count = 0;
+      }
+  }
+
+  class GzFile : public gambatte::File {
+  public:
+    explicit GzFile(char const *filename)
+      : file_(gzopen(filename, "rb"))
+      , fsize_(0)
     {
-      unzClose((unzFile)zipfile);
-      zipfile = 0;
+      if (file_) {
+	char buf[256];
+	int ret;
+
+	while ((ret = gzread(file_, buf, sizeof buf)) > 0)
+	  fsize_ += ret;
+
+	if (ret < 0) {
+	  close();
+	  fsize_ = 0;
+	}
+      }
+
+      rewind();
+    }
+
+    virtual ~GzFile() { close(); }
+
+    virtual void rewind() {
+      if (file_ && gzrewind(file_) < 0)
+	close();
+    }
+
+    virtual std::size_t size() const { return fsize_; };
+
+    virtual void read(char *buffer, std::size_t amount) {
+      if (file_ && gzread(file_, buffer, amount) < 0)
+	close();
+    }
+
+    virtual bool fail() const { return !file_; }
+
+  private:
+    gzFile file_;
+    std::size_t fsize_;
+
+    GzFile(GzFile const &);
+    GzFile & operator=(GzFile const &);
+    void close();
+  };
+
+  void GzFile::close() {
+    if (file_) {
+      gzclose(file_);
+      file_ = 0;
     }
   }
-}
-
-ZipFile::~ZipFile()
-{
-  close();
-}
-
-void ZipFile::rewind()
-{
-  if (is_open())
-  {
-    unzCloseCurrentFile((unzFile)zipfile);
-    unzOpenCurrentFile((unzFile)zipfile);
-  }
-}
-
-bool ZipFile::is_open() const
-{
-  return(zipfile && zip_sub_open);
-}
-
-void ZipFile::close()
-{
-  if (is_open())
-  {
-    unzOpenCurrentFile((unzFile)zipfile);
-    unzClose((unzFile)zipfile);
-    zipfile = 0;
-    zip_sub_open = false;
-  }
-}
-
-void ZipFile::read(char *buffer, size_t amount)
-{
-  if (is_open())
-  {
-    count = (size_t)unzReadCurrentFile((unzFile)zipfile, buffer, amount);
-  }
-  else
-  {
-    count = 0;
-  }
-}
-
-class GzFile : public gambatte::File {
-public:
-	explicit GzFile(char const *filename)
-	: file_(gzopen(filename, "rb"))
-	, fsize_(0)
-	{
-		if (file_) {
-			char buf[256];
-			int ret;
-
-			while ((ret = gzread(file_, buf, sizeof buf)) > 0)
-				fsize_ += ret;
-
-			if (ret < 0) {
-				close();
-				fsize_ = 0;
-			}
-		}
-
-		rewind();
-	}
-
-	virtual ~GzFile() { close(); }
-
-	virtual void rewind() {
-		if (file_ && gzrewind(file_) < 0)
-			close();
-	}
-
-	virtual std::size_t size() const { return fsize_; };
-
-	virtual void read(char *buffer, std::size_t amount) {
-		if (file_ && gzread(file_, buffer, amount) < 0)
-			close();
-	}
-
-	virtual bool fail() const { return !file_; }
-
-private:
-	gzFile file_;
-	std::size_t fsize_;
-
-	GzFile(GzFile const &);
-	GzFile & operator=(GzFile const &);
-	void close();
-};
-
-void GzFile::close() {
-	if (file_) {
-		gzclose(file_);
-		file_ = 0;
-	}
-}
 
 }
 
 // Avoid checking magic header values, because there are no values that cannot occur in a GB ROM.
 transfer_ptr<gambatte::File> gambatte::newFileInstance(std::string const &filepath) {
-	std::size_t const extpos = filepath.rfind('.');
+  std::size_t const extpos = filepath.rfind('.');
 
-	if (extpos != std::string::npos) {
-		std::string const &ext = filepath.substr(extpos + 1);
+  if (extpos != std::string::npos) {
+    std::string const &ext = filepath.substr(extpos + 1);
 
-		if (ext.length() == 3 && std::tolower(ext[0]) == 'z'
-				&& std::tolower(ext[1]) == 'i' && std::tolower(ext[2]) == 'p') {
-			return transfer_ptr<File>(new ZipFile(filepath.c_str()));
-		}
+    if (ext.length() == 3 && std::tolower(ext[0]) == 'z'
+	&& std::tolower(ext[1]) == 'i' && std::tolower(ext[2]) == 'p') {
+      return transfer_ptr<File>(new ZipFile(filepath.c_str()));
+    }
 
-		if (!ext.empty() && std::tolower(ext[ext.length() - 1]) == 'z')
-			return transfer_ptr<File>(new GzFile(filepath.c_str()));
-	}
+    if (!ext.empty() && std::tolower(ext[ext.length() - 1]) == 'z')
+      return transfer_ptr<File>(new GzFile(filepath.c_str()));
+  }
 
-	return transfer_ptr<File>(new StdFile(filepath.c_str()));
+  return transfer_ptr<File>(new StdFile(filepath.c_str()));
 }

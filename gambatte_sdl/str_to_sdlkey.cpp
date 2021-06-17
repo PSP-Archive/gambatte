@@ -16,7 +16,7 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "str_to_sdlkey.h"
+#include <gambatte_sdl/str_to_sdlkey.h>
 #include <cstring>
 #include <map>
 #include <utility>

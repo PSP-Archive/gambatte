@@ -16,17 +16,17 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "adaptivesleep.h"
-#include "audiosink.h"
-#include "blitterwrapper.h"
-#include "parser.h"
-#include "resample/resampler.h"
-#include "resample/resamplerinfo.h"
-#include "skipsched.h"
-#include "str_to_sdlkey.h"
-#include "videolink/vfilterinfo.h"
-#include <gambatte.h>
-#include <pakinfo.h>
+#include <common/adaptivesleep.h>
+#include <gambatte_sdl/audiosink.h>
+#include <gambatte_sdl/blitterwrapper.h>
+#include <gambatte_sdl/parser.h>
+#include <common/resample/resampler.h>
+#include <common/resample/resamplerinfo.h>
+#include <common/skipsched.h>
+#include <gambatte_sdl/str_to_sdlkey.h>
+#include <common/videolink/vfilterinfo.h>
+#include <gambatte/gambatte.h>
+#include <gambatte/pakinfo.h>
 #include <SDL/SDL.h>
 #include <algorithm>
 #include <cstdio>

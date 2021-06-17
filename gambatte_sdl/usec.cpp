@@ -16,7 +16,7 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "usec.h"
+#include <common/usec.h>
 #include <SDL/SDL.h>
 
 usec_t getusecs() {

@@ -19,7 +19,7 @@
 #ifndef SDLBLITTER_H
 #define SDLBLITTER_H
 
-#include "scoped_ptr.h"
+#include <common/scoped_ptr.h>
 #include <cstddef>
 
 struct SDL_Overlay;

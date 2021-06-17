@@ -19,9 +19,9 @@
 #ifndef AUDIOSINK_H
 #define AUDIOSINK_H
 
-#include "ringbuffer.h"
-#include "rateest.h"
-#include "scoped_ptr.h"
+#include <common/ringbuffer.h>
+#include <common/rateest.h>
+#include <common/scoped_ptr.h>
 #include <SDL/SDL.h>
 #include <cstddef>
 

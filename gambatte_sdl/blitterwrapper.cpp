@@ -16,10 +16,10 @@
 //   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 
-#include "blitterwrapper.h"
-#include "videolink/rgb32conv.h"
-#include "videolink/vfilterinfo.h"
-#include "videolink/videolink.h"
+#include <gambatte_sdl/blitterwrapper.h>
+#include <common/videolink/rgb32conv.h>
+#include <common/videolink/vfilterinfo.h>
+#include <common/videolink/videolink.h>
 
 BlitterWrapper::BlitterWrapper(VfilterInfo const &vfinfo, int scale, bool yuv, bool full)
 : blitter_(vfinfo.outWidth, vfinfo.outHeight, scale, yuv, full)
