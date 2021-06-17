@@ -19,7 +19,7 @@
 #ifndef RATEEST_H
 #define RATEEST_H
 
-#include "usec.h"
+#include <common/usec.h>
 #include <cstddef>
 #include <deque>
 #include <utility>

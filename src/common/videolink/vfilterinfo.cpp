@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Sindre Aamås                                    *
+ *   Copyright (C) 2009 by Sindre Aamås                                    *
  *   sinamas@users.sourceforge.net                                         *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -16,38 +16,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.             *
  ***************************************************************************/
-#ifndef ARRAY_H
-#define ARRAY_H
+#include <common/videolink/vfilterinfo.h>
+#include <common/videolink/vfilters/catrom2x.h>
+#include <common/videolink/vfilters/catrom3x.h>
+#include <common/videolink/vfilters/kreed2xsai.h>
+#include <common/videolink/vfilters/maxsthq2x.h>
+#include <common/videolink/vfilters/maxsthq3x.h>
 
-#include <common/defined_ptr.h>
-#include <common/uncopyable.h>
-#include <cstddef>
+static VideoLink * createNone() { return 0; }
 
-template<typename T>
-class SimpleArray : Uncopyable {
-public:
-	explicit SimpleArray(std::size_t size = 0) : a_(size ? new T[size] : 0) {}
-	~SimpleArray() { delete[] defined_ptr(a_); }
-	void reset(std::size_t size = 0) { delete[] defined_ptr(a_); a_ = size ? new T[size] : 0; }
-	T * get() const { return a_; }
-	operator T *() const { return a_; }
+template<class T>
+static VideoLink * createT() { return new T; }
 
-private:
-	T *a_;
+#define VFINFO(handle, Type) { handle, Type::out_width, Type::out_height, createT<Type> }
+
+static VfilterInfo const vfinfos[] = {
+	{ "None", VfilterInfo::in_width, VfilterInfo::in_height, createNone },
+	VFINFO("Bicubic Catmull-Rom spline 2x", Catrom2x),
+	VFINFO("Bicubic Catmull-Rom spline 3x", Catrom3x),
+	VFINFO("Kreed's 2xSaI", Kreed2xSaI),
+	VFINFO("MaxSt's hq2x", MaxStHq2x),
+	VFINFO("MaxSt's hq3x", MaxStHq3x),
 };
 
-template<typename T>
-class Array {
-public:
-	explicit Array(std::size_t size = 0) : a_(size), size_(size) {}
-	void reset(std::size_t size = 0) { a_.reset(size); size_ = size; }
-	std::size_t size() const { return size_; }
-	T * get() const { return a_; }
-	operator T *() const { return a_; }
+std::size_t VfilterInfo::numVfilters() {
+	return sizeof vfinfos / sizeof vfinfos[0];
+}
 
-private:
-	SimpleArray<T> a_;
-	std::size_t size_;
-};
-
-#endif
+VfilterInfo const & VfilterInfo::get(std::size_t n) {
+	return vfinfos[n];
+}

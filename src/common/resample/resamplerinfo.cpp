@@ -16,38 +16,25 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.             *
  ***************************************************************************/
-#ifndef ARRAY_H
-#define ARRAY_H
+#include <common/resample/resamplerinfo.h>
+#include <common/chainresampler.h>
+#include <common/kaiser50sinc.h>
+#include <common/kaiser70sinc.h>
+#include <common/rectsinc.h>
+#include <common/linint.h>
 
-#include <common/defined_ptr.h>
-#include <common/uncopyable.h>
-#include <cstddef>
+static Resampler * createLinint(long inRate, long outRate, std::size_t ) {
+	return new Linint<ResamplerInfo::channels>(inRate, outRate);
+}
 
-template<typename T>
-class SimpleArray : Uncopyable {
-public:
-	explicit SimpleArray(std::size_t size = 0) : a_(size ? new T[size] : 0) {}
-	~SimpleArray() { delete[] defined_ptr(a_); }
-	void reset(std::size_t size = 0) { delete[] defined_ptr(a_); a_ = size ? new T[size] : 0; }
-	T * get() const { return a_; }
-	operator T *() const { return a_; }
-
-private:
-	T *a_;
+ResamplerInfo const ResamplerInfo::resamplers_[] = {
+	{ "Fast", createLinint },
+	{ "High quality (polyphase FIR)", ChainResampler::create<RectSinc> },
+// 	{ "Hamming windowed sinc (~50 dB SNR)", ChainResampler::create<HammingSinc> },
+// 	{ "Blackman windowed sinc (~70 dB SNR)", ChainResampler::create<BlackmanSinc> },
+	{ "Very high quality (polyphase FIR)", ChainResampler::create<Kaiser50Sinc> },
+	{ "Highest quality (polyphase FIR)", ChainResampler::create<Kaiser70Sinc> },
 };
 
-template<typename T>
-class Array {
-public:
-	explicit Array(std::size_t size = 0) : a_(size), size_(size) {}
-	void reset(std::size_t size = 0) { a_.reset(size); size_ = size; }
-	std::size_t size() const { return size_; }
-	T * get() const { return a_; }
-	operator T *() const { return a_; }
-
-private:
-	SimpleArray<T> a_;
-	std::size_t size_;
-};
-
-#endif
+std::size_t const ResamplerInfo::num_ =
+	sizeof ResamplerInfo::resamplers_ / sizeof *ResamplerInfo::resamplers_;

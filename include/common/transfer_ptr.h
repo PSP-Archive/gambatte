@@ -1,7 +1,7 @@
 #ifndef TRANSFER_PTR_H
 #define TRANSFER_PTR_H
 
-#include "defined_ptr.h"
+#include <common/defined_ptr.h>
 
 template<class T, class Deleter = defined_deleter>
 class transfer_ptr {

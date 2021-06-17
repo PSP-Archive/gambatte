@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Sindre Aamås                                    *
+ *   Copyright (C) 2009 by Sindre Aamås                                    *
  *   sinamas@users.sourceforge.net                                         *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -16,38 +16,26 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.             *
  ***************************************************************************/
-#ifndef ARRAY_H
-#define ARRAY_H
+#ifndef KREED2XSAI_H
+#define KREED2XSAI_H
 
-#include <common/defined_ptr.h>
-#include <common/uncopyable.h>
-#include <cstddef>
+#include <common/videolink/videolink.h>
+#include <common/videolink/vfilterinfo.h>
+#include <common/array.h>
+#include <gambatte/gbint.h>
 
-template<typename T>
-class SimpleArray : Uncopyable {
+class Kreed2xSaI : public VideoLink {
 public:
-	explicit SimpleArray(std::size_t size = 0) : a_(size ? new T[size] : 0) {}
-	~SimpleArray() { delete[] defined_ptr(a_); }
-	void reset(std::size_t size = 0) { delete[] defined_ptr(a_); a_ = size ? new T[size] : 0; }
-	T * get() const { return a_; }
-	operator T *() const { return a_; }
+	enum { out_width  = VfilterInfo::in_width  * 2 };
+	enum { out_height = VfilterInfo::in_height * 2 };
+
+	Kreed2xSaI();
+	virtual void * inBuf() const;
+	virtual std::ptrdiff_t inPitch() const;
+	virtual void draw(void *dst, std::ptrdiff_t dstpitch);
 
 private:
-	T *a_;
-};
-
-template<typename T>
-class Array {
-public:
-	explicit Array(std::size_t size = 0) : a_(size), size_(size) {}
-	void reset(std::size_t size = 0) { a_.reset(size); size_ = size; }
-	std::size_t size() const { return size_; }
-	T * get() const { return a_; }
-	operator T *() const { return a_; }
-
-private:
-	SimpleArray<T> a_;
-	std::size_t size_;
+	Array<gambatte::uint_least32_t> const buffer_;
 };
 
 #endif

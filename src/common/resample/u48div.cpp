@@ -16,38 +16,42 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.             *
  ***************************************************************************/
-#ifndef ARRAY_H
-#define ARRAY_H
+#include <common/u48div.h>
+#include <algorithm>
 
-#include <common/defined_ptr.h>
-#include <common/uncopyable.h>
-#include <cstddef>
+unsigned long u48div(unsigned long num1, unsigned num2, unsigned long const den) {
+	unsigned long res = 0;
+	unsigned s = 16;
 
-template<typename T>
-class SimpleArray : Uncopyable {
-public:
-	explicit SimpleArray(std::size_t size = 0) : a_(size ? new T[size] : 0) {}
-	~SimpleArray() { delete[] defined_ptr(a_); }
-	void reset(std::size_t size = 0) { delete[] defined_ptr(a_); a_ = size ? new T[size] : 0; }
-	T * get() const { return a_; }
-	operator T *() const { return a_; }
+	do {
+		if (num1 < 0x10000) {
+			num1 <<= s;
+			num1 |= num2 & ((1 << s) - 1);
+			s = 0;
+		} else {
+			if (num1 < 0x1000000) {
+				unsigned const maxs = std::min(s, 8u);
+				num1 <<= maxs;
+				num1 |= (num2 >> (s - maxs)) & ((1 << maxs) - 1);
+				s -= maxs;
+			}
+			if (num1 < 0x10000000) {
+				unsigned const maxs = std::min(s, 4u);
+				num1 <<= maxs;
+				num1 |= (num2 >> (s - maxs)) & ((1 << maxs) - 1);
+				s -= maxs;
+			}
 
-private:
-	T *a_;
-};
+			while (num1 < den && s) {
+				num1 <<= 1; // if this overflows we're screwed
+				num1 |= num2 >> (s - 1) & 1;
+				s -= 1;
+			}
+		}
 
-template<typename T>
-class Array {
-public:
-	explicit Array(std::size_t size = 0) : a_(size), size_(size) {}
-	void reset(std::size_t size = 0) { a_.reset(size); size_ = size; }
-	std::size_t size() const { return size_; }
-	T * get() const { return a_; }
-	operator T *() const { return a_; }
+		res += (num1 / den) << s;
+		num1 = (num1 % den);
+	} while (s);
 
-private:
-	SimpleArray<T> a_;
-	std::size_t size_;
-};
-
-#endif
+	return res;
+}

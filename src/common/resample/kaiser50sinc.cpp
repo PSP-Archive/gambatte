@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Sindre Aamås                                    *
+ *   Copyright (C) 2008-2009 by Sindre Aamås                               *
  *   sinamas@users.sourceforge.net                                         *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -16,38 +16,17 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.             *
  ***************************************************************************/
-#ifndef ARRAY_H
-#define ARRAY_H
+#include <common/kaiser50sinc.h>
+#include <common/i0.h>
+#include <cmath>
 
-#include <common/defined_ptr.h>
-#include <common/uncopyable.h>
-#include <cstddef>
+double kaiser50SincWin(long const n, long const M) {
+	double const beta = 4.62;
+	static double const i0beta_rec = 1.0 / i0(beta);
 
-template<typename T>
-class SimpleArray : Uncopyable {
-public:
-	explicit SimpleArray(std::size_t size = 0) : a_(size ? new T[size] : 0) {}
-	~SimpleArray() { delete[] defined_ptr(a_); }
-	void reset(std::size_t size = 0) { delete[] defined_ptr(a_); a_ = size ? new T[size] : 0; }
-	T * get() const { return a_; }
-	operator T *() const { return a_; }
+	double x = static_cast<double>(n * 2) / M - 1.0;
+	x = x * x;
+	x = beta * std::sqrt(1.0 - x);
 
-private:
-	T *a_;
-};
-
-template<typename T>
-class Array {
-public:
-	explicit Array(std::size_t size = 0) : a_(size), size_(size) {}
-	void reset(std::size_t size = 0) { a_.reset(size); size_ = size; }
-	std::size_t size() const { return size_; }
-	T * get() const { return a_; }
-	operator T *() const { return a_; }
-
-private:
-	SimpleArray<T> a_;
-	std::size_t size_;
-};
-
-#endif
+	return i0(x) * i0beta_rec;
+}

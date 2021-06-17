@@ -19,7 +19,7 @@
 #ifndef ADAPTIVE_SLEEP_H
 #define ADAPTIVE_SLEEP_H
 
-#include "usec.h"
+#include <common/usec.h>
 
 class AdaptiveSleep {
 public:

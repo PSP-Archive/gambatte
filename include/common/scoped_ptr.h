@@ -1,8 +1,8 @@
 #ifndef SCOPED_PTR_H
 #define SCOPED_PTR_H
 
-#include "transfer_ptr.h"
-#include "uncopyable.h"
+#include <common/transfer_ptr.h>
+#include <common/uncopyable.h>
 
 template<class T, class Deleter = defined_deleter>
 class scoped_ptr : Uncopyable {

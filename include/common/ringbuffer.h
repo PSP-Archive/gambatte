@@ -19,7 +19,7 @@
 #ifndef RINGBUFFER_H
 #define RINGBUFFER_H
 
-#include "array.h"
+#include <common/array.h>
 #include <algorithm>
 #include <cstddef>
 #include <cstring>

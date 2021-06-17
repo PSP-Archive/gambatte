@@ -16,38 +16,38 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.             *
  ***************************************************************************/
-#ifndef ARRAY_H
-#define ARRAY_H
+#ifndef UPSAMPLER_H
+#define UPSAMPLER_H
 
-#include <common/defined_ptr.h>
-#include <common/uncopyable.h>
-#include <cstddef>
+#include <common/subresampler.h>
+#include <cstring>
 
-template<typename T>
-class SimpleArray : Uncopyable {
+template<unsigned channels>
+class Upsampler : public SubResampler {
 public:
-	explicit SimpleArray(std::size_t size = 0) : a_(size ? new T[size] : 0) {}
-	~SimpleArray() { delete[] defined_ptr(a_); }
-	void reset(std::size_t size = 0) { delete[] defined_ptr(a_); a_ = size ? new T[size] : 0; }
-	T * get() const { return a_; }
-	operator T *() const { return a_; }
+	explicit Upsampler(unsigned mul) : mul_(mul) {}
+	virtual std::size_t resample(short *out, short const *in, std::size_t inlen);
+	virtual unsigned mul() const { return mul_; }
+	virtual unsigned div() const { return 1; }
 
 private:
-	T *a_;
+	unsigned mul_;
 };
 
-template<typename T>
-class Array {
-public:
-	explicit Array(std::size_t size = 0) : a_(size), size_(size) {}
-	void reset(std::size_t size = 0) { a_.reset(size); size_ = size; }
-	std::size_t size() const { return size_; }
-	T * get() const { return a_; }
-	operator T *() const { return a_; }
+template<unsigned channels>
+std::size_t Upsampler<channels>::resample(short *out, short const *in, std::size_t const inlen) {
+	unsigned const mul = mul_;
+	if (std::size_t n = inlen) {
+		std::memset(out, 0, inlen * mul * channels * sizeof *out);
 
-private:
-	SimpleArray<T> a_;
-	std::size_t size_;
-};
+		do {
+			std::memcpy(out, in, channels * sizeof *out);
+			in += channels;
+			out += mul * channels;
+		} while (--n);
+	}
+
+	return inlen * mul;
+}
 
 #endif
