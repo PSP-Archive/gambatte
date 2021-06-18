@@ -13,10 +13,9 @@ add_library(gambatte OBJECT
   tima.cpp
   video.cpp
 
-  # file/unzip/ioapi.c
-  # file/unzip/unzip.c
-  file/file.cpp
-  # file/file_zip.cpp
+  file/unzip/ioapi.c
+  file/unzip/unzip.c
+  file/file_zip.cpp
 
   mem/cartridge.cpp
   mem/memptrs.cpp
