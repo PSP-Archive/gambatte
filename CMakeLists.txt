@@ -7,3 +7,6 @@ project(gambatte
 include_directories(include)
 add_subdirectory(src)
 add_subdirectory(gambatte_sdl)
+if(PSP)
+  add_subdirectory(gambatte_psp)
+endif()
