@@ -32,7 +32,7 @@ jobs:
           psp-cmake ..
           make
           cd ..
-          mv build/EBOOT.PBP EBOOT.PBP          
+          mv build/gambatte_psp/EBOOT.PBP EBOOT.PBP          
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
         with:
