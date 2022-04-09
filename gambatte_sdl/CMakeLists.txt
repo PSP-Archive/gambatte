@@ -18,8 +18,17 @@ target_link_libraries(gambatte_sdl
 
 if(PSP) 
   target_link_libraries(gambatte_sdl
-    PUBLIC psppower
-    PUBLIC ${PSP_LIBRARIES})
+    PUBLIC GL
+    PUBLIC pspvram
+    PUBLIC pspaudio
+    PUBLIC pspvfpu
+    PUBLIC pspdisplay
+    PUBLIC pspgu
+    PUBLIC pspge
+    PUBLIC psphprm
+    PUBLIC pspctrl
+    PUBLIC pspirkeyb
+    PUBLIC psppower)
   
   create_pbp_file(TARGET gambatte_sdl TITLE "Gambatte SDL")
 endif(PSP)
