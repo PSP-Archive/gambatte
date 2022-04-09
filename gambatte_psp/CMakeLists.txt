@@ -12,7 +12,17 @@ target_link_libraries(gambatte_psp
   PUBLIC gcc
   PUBLIC stdc++
   PUBLIC SDL
-  PUBLIC ${PSP_LIBRARIES}
+  PUBLIC GL
+  PUBLIC pspvram
+  PUBLIC pspaudio
+  PUBLIC pspvfpu
+  PUBLIC pspdisplay
+  PUBLIC pspdebug
+  PUBLIC pspgu
+  PUBLIC pspge
+  PUBLIC psphprm
+  PUBLIC pspctrl
+  PUBLIC pspirkeyb
   PUBLIC psppower)
 
 create_pbp_file(TARGET gambatte_psp TITLE "Gambatte PSP SDL"
